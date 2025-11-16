@@ -16,48 +16,48 @@ MODEL_FILE = 'random_forest_model.joblib'
 DATA_FILE = 'CAR DETAILS FROM CAR DEKHO.csv'
 
 # --- Function to Train Model (The Fix) ---
-# def train_and_save_model():
-#     """Retrains the model locally to ensure version compatibility."""
-#     with st.spinner("Model version mismatch or missing detected. Retraining model locally..."):
-#         try:
-#             if not os.path.exists(DATA_FILE):
-#                 st.error(f"Critical Error: '{DATA_FILE}' not found. Cannot retrain model.")
-#                 st.stop()
+def train_and_save_model():
+    """Retrains the model locally to ensure version compatibility."""
+    with st.spinner("Model version mismatch or missing detected. Retraining model locally..."):
+        try:
+            if not os.path.exists(DATA_FILE):
+                st.error(f"Critical Error: '{DATA_FILE}' not found. Cannot retrain model.")
+                st.stop()
                 
-#             df = pd.read_csv(DATA_FILE)
+            df = pd.read_csv(DATA_FILE)
             
-#             # Feature Engineering
-#             current_year = 2025
-#             df['Current_Age'] = current_year - df['year']
-#             df = df.drop(['year', 'name'], axis=1)
+            # Feature Engineering
+            current_year = 2025
+            df['Current_Age'] = current_year - df['year']
+            df = df.drop(['year', 'name'], axis=1)
             
-#             X = df.drop('selling_price', axis=1)
-#             y = df['selling_price']
+            X = df.drop('selling_price', axis=1)
+            y = df['selling_price']
             
-#             # Preprocessing
-#             # Note: We use the EXACT column names from the CSV
-#             categorical_features = ['fuel', 'seller_type', 'transmission', 'owner']
+            # Preprocessing
+            # Note: We use the EXACT column names from the CSV
+            categorical_features = ['fuel', 'seller_type', 'transmission', 'owner']
             
-#             preprocessor = ColumnTransformer(
-#                 transformers=[
-#                     ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)
-#                 ],
-#                 remainder='passthrough'
-#             )
+            preprocessor = ColumnTransformer(
+                transformers=[
+                    ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)
+                ],
+                remainder='passthrough'
+            )
             
-#             model = Pipeline(steps=[
-#                 ('preprocessor', preprocessor),
-#                 ('model', RandomForestRegressor(n_estimators=100, random_state=42))
-#             ])
+            model = Pipeline(steps=[
+                ('preprocessor', preprocessor),
+                ('model', RandomForestRegressor(n_estimators=100, random_state=42))
+            ])
             
-#             model.fit(X, y)
-#             joblib.dump(model, MODEL_FILE)
-#             st.success("Model retrained and saved successfully! Loading app...")
-#             return model
+            model.fit(X, y)
+            joblib.dump(model, MODEL_FILE)
+            st.success("Model retrained and saved successfully! Loading app...")
+            return model
             
-#         except Exception as e:
-#             st.error(f"Failed to retrain model: {e}")
-#             st.stop()
+        except Exception as e:
+            st.error(f"Failed to retrain model: {e}")
+            st.stop()
 
 # --- 1. Load the Saved Model ---
 try:
